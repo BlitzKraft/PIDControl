@@ -9,11 +9,12 @@ float preverror; //previous error
 float prevsumerror; //sum of all previous errors
 float prevx, prevy; // previous x, y coordinates
 float ddterror; // This is just d(error)/dt. Don't be terrorized by this ;)
+float incValue = 50; //Sets how much to increase/decrease when UP/DOWN arrows are pressed.
 
 void setup() {
   size(600,600);
   background(200,200,200);
-  frameRate(5);
+  frameRate(20);
 }
 
 void draw(){
@@ -28,7 +29,7 @@ void draw(){
 
 void set_y(float inp){
   ddterror = preverror-error;
-  y=y+(kp*error)+(ki*prevsumerror)+(kd*ddterror);
+  y=y+(kp*error)+(ki*prevsumerror)+(kd*ddterror);//basic PID loop formula
   preverror = error;
   error = setpoint - y;
   prevsumerror += error;
@@ -36,10 +37,10 @@ void set_y(float inp){
 
 void keyPressed() {
   if (keyCode == UP) {
-    setpoint -= 20;
+    setpoint -= incValue;
   }
   if (keyCode == DOWN) {
-    setpoint += 20;
+    setpoint += incValue;
   }
 }
   
