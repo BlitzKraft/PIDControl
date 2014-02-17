@@ -1,0 +1,45 @@
+float x = 0; //x and y coordinates in the view
+float y =0;
+float setpoint = 300; //Initial set point
+float kp = 0.8; // Kp, Ki, and Kd values - See details
+float ki = 0.1;
+float kd = 0.1;
+float error; //deviation from set point
+float preverror; //previous error
+float prevsumerror; //sum of all previous errors
+float prevx, prevy; // previous x, y coordinates
+float ddterror; // This is just d(error)/dt. Don't be terrorized by this ;)
+
+void setup() {
+  size(600,600);
+  background(200,200,200);
+  frameRate(5);
+}
+
+void draw(){
+  x = x+1; //increment x for graph to progress along.
+  set_y(setpoint);
+  point(x,y);
+  line(x, y, prevx, prevy);
+  prevx = x;
+  prevy = y;
+
+}
+
+void set_y(float inp){
+  ddterror = preverror-error;
+  y=y+(kp*error)+(ki*prevsumerror)+(kd*ddterror);
+  preverror = error;
+  error = setpoint - y;
+  prevsumerror += error;
+}
+
+void keyPressed() {
+  if (keyCode == UP) {
+    setpoint -= 20;
+  }
+  if (keyCode == DOWN) {
+    setpoint += 20;
+  }
+}
+  
