@@ -4,12 +4,21 @@ PID Controller
 See http://en.wikipedia.org/wiki/PID_Controller
 */
 
+/*
+Interesting sets of Kpid values:
+[2, 0.01, 0.01] exponentially decreasing sine wave
+[2. 2, 0.5] Solid blob. Almost solid.
+
+
+
+*/
+
 float x = 0; //x and y coordinates in the view
 float y =0;
 float setpoint = 300; //Initial set point
-float kp = 0.3; // Kp, Ki, and Kd values - See details
-float ki = 0.0;
-float kd = 0.2;
+float kp = 1; // Kp, Ki, and Kd values - See details
+float ki = 2;
+float kd = .5;
 float error; //deviation from set point
 float preverror; //previous error
 float prevsumerror; //sum of all previous errors
@@ -20,7 +29,7 @@ float incValue = 50; //Sets how much to increase/decrease when UP/DOWN arrows ar
 void setup() {
   size(600,600);
   background(200,200,200);
-  frameRate(20);
+  frameRate(50);
 }
 
 void draw(){
@@ -30,6 +39,7 @@ void draw(){
   line(x, y, prevx, prevy);
   prevx = x;
   prevy = y;
+  if(x>width) {cleanup();}
 
 }
 
@@ -49,4 +59,7 @@ void keyPressed() {
     setpoint += incValue;
   }
 }
-  
+
+void cleanup() {
+  redraw();
+}
